@@ -1,25 +1,21 @@
-import os
-import time
-import socket
-from urllib.request import urlretrieve
-from urllib.error import HTTPError, URLError
-from selenium import webdriver
-from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, \
-    ElementNotInteractableException
 from PIL import Image
+from selenium import webdriver
+from selenium.common.exceptions import ElementClickInterceptedException, NoSuchElementException, ElementNotInteractableException
+from selenium.webdriver.chrome.options import Options
+from urllib.error import HTTPError, URLError
+from urllib.request import urlretrieve
+import os
+import socket
+import time
 
 
 def scroll_down():
     scroll_count = 0
-
     print("ㅡ 스크롤 다운 시작 ㅡ")
-
     # 스크롤 위치값 얻고 last_height 에 저장
     last_height = driver.execute_script("return document.body.scrollHeight")
-
     # 결과 더보기 버튼을 클릭했는지 유무
     after_click = False
-
     while True:
         div = driver.find_element_by_xpath('//*[@id="islrg"]/div[1]')
         # class_name에 공백이 있는 경우 여러 클래스가 있는 것이므로 아래와 같이 css_selector로 찾음
@@ -32,19 +28,14 @@ def scroll_down():
         scroll_count += 1
         driver.implicitly_wait(2)
         time.sleep(2)
-
-
         # 스크롤 위치값 얻고 new_height 에 저장
         new_height = driver.execute_script("return document.body.scrollHeight")
-
         # 스크롤이 최하단이며
         if last_height == new_height:
-
             # 결과 더보기 버튼을 클릭한적이 있는 경우
             if after_click is True:
                 print("ㅡ 스크롤 다운 종료 ㅡ")
                 break
-
             # 결과 더보기 버튼을 클릭한적이 없는 경우
             if after_click is False:
                 if driver.find_element_by_xpath('//*[@id="islmp"]/div/div/div/div/div[5]/input').is_displayed():
@@ -54,8 +45,8 @@ def scroll_down():
                     print("ㅡ NoSuchElementException ㅡ")
                     print("ㅡ 스크롤 다운 종료 ㅡ")
                     break
-
         last_height = new_height
+
 
 def click_and_retrieve(index, img, img_list_length):
     global crawled_count
@@ -70,10 +61,10 @@ def click_and_retrieve(index, img, img_list_length):
         urlretrieve(src, f"{path}/{date}/{query}/{crawled_count + 1}.jpg")
         print(f"{index + 1} / {img_list_length} 번째 사진 저장 (png)")
         crawled_count += 1
-
     except HTTPError:
         print("ㅡ HTTPError & 패스 ㅡ")
         pass
+
 
 def crawling():
     global crawled_count
@@ -129,8 +120,8 @@ def crawling():
 
     except ZeroDivisionError:
         print("ㅡ img_list 가 비어있음 ㅡ")
-
     # driver.quit()
+
 
 def filtering():
     print("ㅡ 필터링 시작 ㅡ")
@@ -147,13 +138,12 @@ def filtering():
                 os.remove(file_path)
                 print(f"{index} 번째 사진 삭제")
                 filtered_count += 1
-
         # 이미지 파일이 깨져있는 경우
         except OSError:
             os.remove(file_path)
             filtered_count += 1
-
     print(f"ㅡ 필터링 종료 (총 갯수: {crawled_count - filtered_count}) ㅡ")
+
 
 def checking():
     # 입력 받은 검색어가 이름인 폴더가 존재하면 중복으로 판단
@@ -163,6 +153,7 @@ def checking():
             print(f"ㅡ 중복된 검색어 ({dir_name}) ㅡ")
             return True
 
+
 # clickAndRetrieve() 과정에서 urlretrieve 이 너무 오래 걸릴 경우를 대비해 타임 아웃 지정
 socket.setdefaulttimeout(30)
 
@@ -171,18 +162,23 @@ path = "D:/"
 date = "1"
 
 # 드라이버 경로 지정 (Microsoft Edge)
-driver = webdriver.Chrome("C:/workspace/flask_crawling/chromedriver.exe")
+option = webdriver.ChromeOptions()
+option.add_argument('headless')
+option.add_argument('window-size=1920x1080')
+driver = webdriver.Chrome(executable_path="C:/workspace/flask_crawling/chromedriver.exe", options=option)
 crawled_count = 100
 
 
 # 목표 크롤링 수 만약 0 이면 전체 크롤링
-end_count = 100
+end_count = 10
 # 여기다가 검색할 키워드 입력하면 됨.
 # arr = [
 #   '1', '2', '3' ... 'n'
 # ]
 arr = [
-    '가수 민경훈 얼굴'
+    '가수 민경훈 얼굴',
+    '호랑이 상 연예인',
+    '고양이 상 연예인'
 ]
 
 
