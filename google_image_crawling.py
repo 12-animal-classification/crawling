@@ -21,6 +21,11 @@ def scroll_down():
     after_click = False
 
     while True:
+        div = driver.find_element_by_xpath('//*[@id="islrg"]/div[1]')
+        # class_name에 공백이 있는 경우 여러 클래스가 있는 것이므로 아래와 같이 css_selector로 찾음
+        img_list = div.find_elements_by_css_selector(".rg_i.Q4LuWd")
+        if len(img_list) > end_count:
+            break
         print(f"ㅡ 스크롤 횟수: {scroll_count} ㅡ")
         # 스크롤 다운
         driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -85,8 +90,11 @@ def crawling():
     img_list = div.find_elements_by_css_selector(".rg_i.Q4LuWd")
     os.makedirs(path + '/' + date + '/' + query)
     print(f"ㅡ {path}{date}/{query} 생성 ㅡ")
-
+    cnt = 0
     for index, img in enumerate(img_list):
+        if end_count == cnt and end_count != 0:
+            break
+        cnt += 1
         try:
             click_and_retrieve(index, img, len(img_list))
         except ElementClickInterceptedException:
@@ -159,36 +167,31 @@ def checking():
 socket.setdefaulttimeout(30)
 
 # 이미지들이 저장될 경로 및 폴더 이름
-path = "D:/Data"
-date = "face_dataset_for_man"
+path = "D:/"
+date = "1"
 
 # 드라이버 경로 지정 (Microsoft Edge)
-driver = webdriver.Chrome("C:/workspace/chrome_for_crawling/chromedriver.exe")
-
-# 크롤링한 이미지 수
+driver = webdriver.Chrome("C:/workspace/flask_crawling/chromedriver.exe")
 crawled_count = 100
 
+
+# 목표 크롤링 수 만약 0 이면 전체 크롤링
+end_count = 100
 # 여기다가 검색할 키워드 입력하면 됨.
+# arr = [
+#   '1', '2', '3' ... 'n'
+# ]
 arr = [
-    '민경훈',
-    '이동욱',
-    '정국',
-    '백윤식',
-    '공유',
-    '이준기',
-    '이근',
-    '김재환',
-    '빈지노',
-    '이종석',
-    '유승호',
-    '백종원',
+    '가수 민경훈 얼굴'
 ]
+
 
 for row in arr:
     query = row
     time.sleep(2)
     crawling()
 
+driver.delete_all_cookies()
 driver.quit()
 # filtering()
 
