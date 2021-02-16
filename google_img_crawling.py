@@ -157,17 +157,28 @@ socket.setdefaulttimeout(30)
 
 # 이미지들이 저장될 경로 및 폴더 이름
 path = "C:/Data"
-date = "2020.11.04"
+date = "2021.02.16"
 
 # 드라이버 경로 지정 (Microsoft Edge)
-driver = webdriver.Chrome("C:/workspace/flask_crawling/chromedriver.exe")
+driver = webdriver.Chrome("C:/workspace/chrome_for_crawling/chromedriver.exe")
 
 # 크롤링한 이미지 수
 crawled_count = 100
 
 # 여기다가 검색할 키워드 입력하면 됨.
 arr = [
-    'Yorkshire pig face -art -mask -emoji'
+    '민경훈',
+    '이동욱',
+    '정국',
+    '백윤식',
+    '공유',
+    '이준기',
+    '이근',
+    '김재환',
+    '빈지노',
+    '이종석',
+    '유승호',
+    '백종원',
 ]
 '''
     'Large Black pig face -art -mask -emoji'
