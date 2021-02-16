@@ -159,11 +159,11 @@ def checking():
 socket.setdefaulttimeout(30)
 
 # 이미지들이 저장될 경로 및 폴더 이름
-path = "D:/"
-date = "1"
+path = "D:/Data"
+date = "face_dataset_for_man"
 
 # 드라이버 경로 지정 (Microsoft Edge)
-driver = webdriver.Chrome("C:/workspace/flask_crawling/chromedriver.exe")
+driver = webdriver.Chrome("C:/workspace/chrome_for_crawling/chromedriver.exe")
 
 # 크롤링한 이미지 수
 crawled_count = 100
